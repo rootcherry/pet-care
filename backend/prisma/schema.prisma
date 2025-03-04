@@ -1,0 +1,73 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url = env("DATABASE_URL")
+}
+
+model Cliente {
+    id       Int    @id @default(autoincrement())
+    nome     String
+    endereco String
+    cep      String
+    telefone String
+    email    String
+    animais  Animal[] // 1:N
+}
+
+model Animal {
+    id          Int @id @default(autoincrement())
+    nome        String
+    idade       Int
+    sexo        Int
+    especieId   Int
+    especie     Especie @relation(fields: [especieId], references: [id])
+    clienteId   Int
+    cliente     Cliente @relation(fields: [clienteId], references: [id])
+    tratamentos Tratamento[]
+}
+
+model Especie {
+  id               Int        @id @default(autoincrement())
+  nome             String
+  animais Animal[]
+}
+
+model Tratamento {
+  id                 Int        @id @default(autoincrement())
+  dataInicial        DateTime
+  dataFinal          DateTime
+  animalId           Int
+  animal             Animal     @relation(fields: [animalId], references: [id])
+  consultas          Consulta[]
+}
+
+model Consulta {
+  id            Int      @id @default(autoincrement())
+  data          DateTime
+  relato        String
+  tratamentoId  Int
+  tratamento    Tratamento @relation(fields: [tratamentoId], references: [id])
+  exames        Exame[]
+  veterinarioId Int
+  veterinario   Veterinario @relation(fields: [veterinarioId], references: [id])
+}
+
+model Exame {
+  id          Int     @id @default(autoincrement())
+  descricao   String
+  consultaId  Int?
+  consulta    Consulta? @relation(fields: [consultaId], references: [id])
+}
+
+model Veterinario {
+  id         Int     @id @default(autoincrement())
+  nome       String
+  endereco   String
+  cep        BigInt
+  telefone   String
+  email      String
+  consultas  Consulta[]
+}
