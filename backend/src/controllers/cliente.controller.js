@@ -3,6 +3,8 @@ import prisma from "../database.js";
 const ClienteController = {
   async registrarCliente(req, res) {
     try {
+      console.log("Dados recebidos:", req.body);
+
       const {
         nomeCliente,
         enderecoCliente,

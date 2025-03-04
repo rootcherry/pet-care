@@ -8,13 +8,13 @@ datasource db {
 }
 
 model Cliente {
-    id       Int    @id @default(autoincrement())
-    nome     String
-    endereco String
-    cep      String
-    telefone String
-    email    String
-    animais  Animal[] // 1:N
+    id              Int    @id @default(autoincrement())
+    nomeCliente     String
+    enderecoCliente String
+    cepCliente      String
+    telefoneCliente String
+    emailCliente    String
+    animais         Animal[] // 1:N
 }
 
 model Animal {
