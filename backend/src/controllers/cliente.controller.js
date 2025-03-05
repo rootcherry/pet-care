@@ -5,27 +5,22 @@ const ClienteController = {
     try {
       console.log("Dados recebidos:", req.body);
 
-      const {
-        nomeCliente,
-        enderecoCliente,
-        cepCliente,
-        telefoneCliente,
-        emailCliente,
-      } = req.body;
+      const { nome, endereco, cep, telefone, email } = req.body;
 
       const novoCliente = await prisma.cliente.create({
         data: {
-          nomeCliente,
-          enderecoCliente,
-          cepCliente,
-          telefoneCliente,
-          emailCliente,
+          nome,
+          endereco,
+          cep,
+          telefone,
+          email,
         },
       });
 
       res.status(201).json(novoCliente);
     } catch (error) {
-      res.status(500).json({ error: "Erro ao registrar cliente" });
+      console.log(error);
+      res.status(500).json({ error: "Ocorreu um erro ao registrar cliente." });
     }
   },
 
@@ -34,7 +29,7 @@ const ClienteController = {
       const clientes = await prisma.cliente.findMany();
       res.json(clientes);
     } catch (error) {
-      res.status(500).json({ error: "Erro ao listar clientes" });
+      res.status(500).json({ error: "Ocorreu um erro ao listar os clientes." });
     }
   },
 
@@ -46,39 +41,33 @@ const ClienteController = {
       });
 
       if (!cliente)
-        return res.status(404).json({ error: "Cliente não encontrado" });
+        return res.status(404).json({ error: "Cliente não foi encontrado." });
 
       res.json(cliente);
     } catch (error) {
-      res.status(500).json({ error: "Erro ao consultar cliente" });
+      res.status(500).json({ error: "Erro ao consultar os dados do cliente." });
     }
   },
 
   async atualizarCliente(req, res) {
     try {
       const { id } = req.params;
-      const {
-        nomeCliente,
-        enderecoCliente,
-        cepCliente,
-        telefoneCliente,
-        emailCliente,
-      } = req.body;
+      const { nome, endereco, cep, telefone, email } = req.body;
 
       const clienteAtualizado = await prisma.cliente.update({
         where: { id: Number(id) },
         data: {
-          nomeCliente,
-          enderecoCliente,
-          cepCliente,
-          telefoneCliente,
-          emailCliente,
+          nome,
+          endereco,
+          cep,
+          telefone,
+          email,
         },
       });
 
       res.json(clienteAtualizado);
     } catch (error) {
-      res.status(500).json({ error: "Erro ao atualizar cliente" });
+      res.status(500).json({ error: "Ocorreu um erro ao atualizar cliente." });
     }
   },
 
@@ -88,9 +77,10 @@ const ClienteController = {
 
       await prisma.cliente.delete({ where: { id: Number(id) } });
 
-      res.json({ message: "Cliente deletado com sucesso" });
+      res.json({ message: "Cliente excluído com sucesso." });
     } catch (error) {
-      res.status(500).json({ error: "Erro ao deletar cliente" });
+      console.log(error);
+      res.status(500).json({ error: "Ocorreu um erro ao deletar o cliente." });
     }
   },
 };

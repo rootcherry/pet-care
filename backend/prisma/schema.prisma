@@ -9,11 +9,11 @@ datasource db {
 
 model Cliente {
     id              Int    @id @default(autoincrement())
-    nomeCliente     String
-    enderecoCliente String
-    cepCliente      String
-    telefoneCliente String
-    emailCliente    String
+    nome            String
+    endereco        String
+    cep             String
+    telefone        String
+    email           String
     animais         Animal[] // 1:N
 }
 
@@ -21,12 +21,12 @@ model Animal {
     id          Int @id @default(autoincrement())
     nome        String
     idade       Int
-    sexo        Int
+    sexo        String
     especieId   Int
     especie     Especie @relation(fields: [especieId], references: [id])
     clienteId   Int
     cliente     Cliente @relation(fields: [clienteId], references: [id])
-    tratamentos Tratamento[]
+    tratamentos Tratamento[] // 1:N
 }
 
 model Especie {
